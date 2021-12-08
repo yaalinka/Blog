@@ -1,0 +1,92 @@
+{% extends 'page/index.html' %}
+{% block content %}
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'main' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile' %}">Your Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_article' %}">Add Article</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-sm-3 mb-5">
+            <div class="card" style="width: 14rem;">
+                {% if not cat_selected %}
+                <div class="card-header">
+                   <a href="{% url 'main' %}" style="color:black;">All Categories</a>
+                </div>
+                {% for category in categories %}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="{% url 'chosen_category' category.pk %}"
+                                                   style="color:black;">{{ category|title }}</a></li>
+                </ul>
+                {% endfor %}
+
+                {% else %}
+                <div class="card-header">
+                   <a href="{% url 'chosen_category' cat_selected.pk %}" style="color:black;">{{ cat_selected|title }}</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="{% url 'main' %}"
+                                                   style="color:black;">All Categories</a></li>
+                    {% for category in categories %}
+                    <li class="list-group-item"><a href="{% url 'chosen_category' category.pk %}"
+                                                   style="color:black;">{{ category|title }}</a></li>
+                </ul>
+                {% endfor %}
+                {% endif %}
+                <a href="{% url 'add_article' %}" class="btn btn-dark btn-block btn-sm m-auto">Add Article</a>
+            </div>
+        </div>
+        {% if articles %}
+        {% for article in articles %}
+        <div class="col-xl-9 articles">
+            <div class="row">
+                <h3>{{ article.title }}</h3>
+                <p>{{ article.content|linebreaks|truncatechars:300 }}</p>
+                <div class="time-and-author">
+                    <a href="{% url 'article' article.slug %}" class="btn btn-dark btn-sm">Read Article</a>
+
+                    <p>Date: {{ article.time_create }}</p>
+                    <p>Author: {{ article.author }}</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+        {% else %}
+        <h2>No articles yet</h2>
+        {% endif %}
+
+    </div>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock content %}

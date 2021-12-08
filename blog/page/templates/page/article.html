@@ -1,0 +1,29 @@
+{% extends 'page/index.html' %}
+{% block content %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'main' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile' %}">Your Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_article' %}">Add Article</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<a href="{% url 'main' %}" class="back-link">&#8592; Go back</a>
+
+<div class="article">
+<h3>{{ article.title }}</h3>
+<p>{{ article.content|linebreaks }}</p>
+<div class="time-and-author">
+    <p>Date: {{ article.time_create }}</p>
+    <p>Author: {{ article.author }}</p>
+</div>
+    </div>
+{% endblock content %}

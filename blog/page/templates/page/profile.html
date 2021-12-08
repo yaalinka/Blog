@@ -1,0 +1,44 @@
+{% extends 'page/index.html' %}
+{% block content %}
+
+<li class="nav-item">
+        <a class="nav-link" href="{% url 'main' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About us</a>
+      </li>
+      <li class="nav-item active">
+          <a class="nav-link" href="{% url 'profile' %}">Your Profile <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_article' %}">Add Article</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<a class="logout-link" href="{% url 'logout' %}">Logout</a>
+<h1>{{ request.user|title }}'s articles</h1>
+{% if articles %}
+{% for article in articles %}
+<div class="col-lg-11 ml-5 articles">
+    <div class="row">
+        <h3>{{ article.title }}</h3>
+        <p>{{ article.content|linebreaks }}</p>
+        <div class="time-and-author">
+            <p>Date: {{ article.time_create }}</p>
+            <p>Author: {{ article.author }}</p>
+        </div>
+    </div>
+</div>
+<div class="two-buttons">
+<a href="{% url 'edit_article' article.slug %}" class="btn btn-dark btn-sm ml-5">Edit Article</a>
+<a href="{% url 'delete_article' article.slug %}" class="btn btn-dark btn-sm ml-5">Delete Article</a>
+</div>
+<hr>
+{% endfor %}
+{% else %}
+<h2>No articles yet</h2>
+{% endif %}
+
+{% endblock content %}
+
